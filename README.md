@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Valentine's Day Website 💕
 
-## Getting Started
+A personal, romantic journey-based website built with Next.js for a special someone.
 
-First, run the development server:
+## 🎉 Quick Start
 
 ```bash
+cd valentine-site
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install -g vercel
+vercel
+```
 
-## Learn More
+You'll get a secret URL to share with your girlfriend!
 
-To learn more about Next.js, take a look at the following resources:
+## ✨ Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 🎯 **5-Section Journey**: Landing → Interactive → Transition → Sentimental → Surprise
+- 💝 **Interactive Games**: Relationship quiz + flip cards
+- 📸 **Photo Gallery**: Slideshow with swipe gestures
+- ⏰ **Timeline**: Your relationship milestones
+- 💌 **Love Letter**: Heartfelt message display
+- 🎨 **Beautiful Animations**: Framer Motion powered
+- 📱 **Mobile-First**: Optimized for phones
+- ⚡ **Fast**: Static generation + image optimization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📝 Customize Your Site
 
-## Deploy on Vercel
+### 1. Edit Content
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Open `lib/content.ts` and update:
+- Welcome message
+- Quiz questions about your relationship
+- Flip card messages ("reasons I love you")
+- Your heartfelt letter
+- Photo gallery paths
+- Timeline events
+- Final surprise message
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. Add Photos
+
+1. Create folders:
+   - `/public/photos/` - gallery images
+   - `/public/timeline/` - timeline images
+
+2. Add your photos and update paths in `lib/content.ts`
+
+### 3. Customize Colors (Optional)
+
+Edit `app/globals.css` to change the romantic color scheme.
+
+## 📚 Documentation
+
+- **PROJECT_SUMMARY.md** - Complete feature overview
+- **DEPLOYMENT.md** - Detailed deployment guide
+- **README.md** - This file
+
+## 🛠 Tech Stack
+
+- Next.js 14 with App Router
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- React Testing Library + Jest
+- Property-based testing with fast-check
+
+## 📁 Project Structure
+
+```
+valentine-site/
+├── app/              # Next.js app router pages
+├── components/       # React components
+├── hooks/           # Custom React hooks
+├── lib/             # Utility functions & content
+├── types/           # TypeScript type definitions
+└── public/          # Static assets (add your photos here!)
+```
+
+## 🎯 User Journey
+
+1. Landing page with floating hearts
+2. Fun relationship quiz
+3. Flip cards revealing reasons you love her
+4. Beautiful transition moment
+5. Heartfelt letter
+6. Photo gallery of memories
+7. Relationship timeline
+8. Final surprise with confetti!
+
+## 🧪 Testing
+
+```bash
+npm test
+npm run test:watch
+```
+
+## 🏗 Build
+
+```bash
+npm run build
+npm start
+```
+
+## 💡 Tips
+
+- Test on mobile before sharing
+- Keep photos under 500KB
+- Personalize all content in `lib/content.ts`
+- The Vercel URL is your "secret" link
+
+---
+
+**Made with ❤️ for Valentine's Day**
+

@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf8f6;
+  --foreground: #2c2c2c;
+  
+  /* Refined, professional color scheme */
+  --blush: #f5ebe8;
+  --rose: #d4a5a5;
+  --lavender: #d4c5d8;
+  --warm-gray: #6b6b6b;
+  --soft-white: #ffffff;
+  --paper: #f9f7f4;
+  --accent: #c89595;
+}
+
+/* Space mode colors */
+.space-mode {
+  --foreground: #e0e0e0;
+  --warm-gray: #a0a0a0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-blush: var(--blush);
+  --color-rose: var(--rose);
+  --color-lavender: var(--lavender);
+  --color-warm-gray: var(--warm-gray);
+  --color-soft-white: var(--soft-white);
+  --color-paper: var(--paper);
+  --color-accent: var(--accent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: auto;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+  height: auto;
+  scroll-behavior: smooth;
+}
+
+main {
+  width: 100%;
+  overflow: visible;
+  height: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+/* Professional shadow utilities */
+.shadow-elegant {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-elegant-hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
