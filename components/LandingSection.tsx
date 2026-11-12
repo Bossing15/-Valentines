@@ -1,100 +1,70 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { motion } from "framer-motion";
+import { Icon } from "@/components/SiteIcons";
 
 export function LandingSection() {
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-transparent">
-      {/* Subtle floating hearts */}
-      <FloatingHearts />
-      
-      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <motion.h1
-          className="text-4xl md:text-5xl lg:text-7xl mb-10 text-foreground font-light tracking-tight leading-tight"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-        >
+    <section
+      id="top"
+      className="landing-section"
+      aria-labelledby="landing-title"
+    >
+      <div className="hero-orbit" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="hero-flower hero-flower-left" aria-hidden="true">
+        <Botanical />
+      </div>
+      <div className="hero-flower hero-flower-right" aria-hidden="true">
+        <Botanical />
+      </div>
+      <motion.div
+        className="hero-content section-shell"
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.15 }}
+      >
+        <p className="eyebrow hero-eyebrow">
+          <span className="tiny-rule" /> A little love, a whole lot of us{" "}
+          <span className="tiny-rule" />
+        </p>
+        <h1 id="landing-title" className="hero-title">
           Almost five years ago,
-          <br />
-          <span className="text-accent font-normal">I met my favorite person.</span>
-        </motion.h1>
-
-        <motion.p
-          className="text-lg md:text-xl text-warm-gray font-light leading-relaxed"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.6, ease: 'easeOut' }}
-        >
-          This is just a small reminder of why I still choose you.
-        </motion.p>
-
-        {/* Heartbeat animation */}
-        <motion.div
-          className="mt-20 text-5xl opacity-60"
-          animate={{
-            scale: [1, 1.08, 1],
-          }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-        >
-          💕
-        </motion.div>
+          <br />I met my <em>favorite person.</em>
+        </h1>
+        <p className="hero-description">
+          This is just a small reminder of why
+          <br className="desktop-break" /> I still choose you.
+        </p>
+        <a href="#story" className="rose-button hero-button">
+          Turn the first page <Icon name="arrow-down" size={17} />
+        </a>
+      </motion.div>
+      <div className="hero-footnote section-shell">
+        <span>EST. 2021</span>
+        <Icon name="heart" size={18} />
+        <span>STILL CHOOSING YOU</span>
       </div>
     </section>
-  )
+  );
 }
 
-function FloatingHearts() {
-  const [hearts, setHearts] = useState<Array<{
-    id: number
-    left: string
-    delay: number
-    duration: number
-  }>>([])
-
-  useEffect(() => {
-    setHearts(
-      Array.from({ length: 8 }, (_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        delay: Math.random() * 5,
-        duration: 15 + Math.random() * 10
-      }))
-    )
-  }, [])
-
-  if (hearts.length === 0) return null
-
+function Botanical() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-      {hearts.map((heart) => (
-        <motion.div
-          key={heart.id}
-          className="absolute text-4xl text-rose"
-          style={{
-            left: heart.left,
-            bottom: '-50px'
-          }}
-          animate={{
-            y: [0, -1200],
-            opacity: [0, 0.3, 0.3, 0],
-            rotate: [0, 360]
-          }}
-          transition={{
-            duration: heart.duration,
-            delay: heart.delay,
-            repeat: Infinity,
-            ease: 'linear'
-          }}
-        >
-          ♥
-        </motion.div>
-      ))}
-    </div>
-  )
+    <svg
+      viewBox="0 0 200 360"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
+      aria-hidden="true"
+    >
+      <path d="M98 350C85 260 123 183 103 78M98 303C54 302 25 274 25 254c37-5 71 14 73 49ZM100 261c48-8 66-41 62-64-35 8-58 28-62 64ZM104 215c-44-6-60-40-56-62 37 5 54 27 56 62ZM107 163c39-8 53-35 50-56-29 5-48 24-50 56Z" />
+      <path d="M103 83c-27-1-38-21-30-35 7-13 25-9 30 5-8-27 3-49 18-43s11 29-7 42c22-16 42-8 40 6s-21 22-40 17c14 13 13 34-1 36s-18-12-10-28Z" />
+      <circle cx="106" cy="66" r="7" />
+      <path d="M31 254c16 15 42 30 67 49m64-106c-20 20-45 44-62 64M48 153c17 20 34 46 56 62m53-108c-16 22-31 39-50 56" />
+    </svg>
+  );
 }

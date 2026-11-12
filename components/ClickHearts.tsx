@@ -1,86 +1,59 @@
-'use client'
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { Icon } from "@/components/SiteIcons";
 
 interface Heart {
-  id: number
-  x: number
-  y: number
-  emoji: string
+  id: number;
+  x: number;
+  y: number;
 }
 
 export function ClickHearts() {
-  const [hearts, setHearts] = useState<Heart[]>([])
-  const [nextId, setNextId] = useState(0)
+  const [hearts, setHearts] = useState<Heart[]>([]);
+  const nextId = useRef(0);
 
   useEffect(() => {
-    const handleClick = (e: MouseEvent | TouchEvent) => {
-      const emojis = ['💕', '💖', '💗', '💓', '💝', '💘', '❤️', '🌸', '✨', '⭐']
-      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)]
-      
-      let clientX: number, clientY: number
-      
-      if ('touches' in e) {
-        // Touch event
-        clientX = e.touches[0]?.clientX || e.changedTouches[0]?.clientX || 0
-        clientY = e.touches[0]?.clientY || e.changedTouches[0]?.clientY || 0
-      } else {
-        // Mouse event
-        clientX = e.clientX
-        clientY = e.clientY
-      }
-      
-      const newHeart: Heart = {
-        id: nextId,
-        x: clientX,
-        y: clientY,
-        emoji: randomEmoji
-      }
-      
-      setHearts(prev => [...prev, newHeart])
-      setNextId(prev => prev + 1)
-      
-      // Remove heart after animation
-      setTimeout(() => {
-        setHearts(prev => prev.filter(h => h.id !== newHeart.id))
-      }, 2000)
-    }
-
-    window.addEventListener('click', handleClick as EventListener)
-    window.addEventListener('touchstart', handleClick as EventListener)
+    const timers = new Set<ReturnType<typeof setTimeout>>();
+    const handleClick = (event: MouseEvent) => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const heart = {
+        id: nextId.current++,
+        x: event.clientX,
+        y: event.clientY,
+      };
+      setHearts((previous) => [...previous.slice(-7), heart]);
+      const timer = setTimeout(() => {
+        setHearts((previous) =>
+          previous.filter((item) => item.id !== heart.id),
+        );
+        timers.delete(timer);
+      }, 1000);
+      timers.add(timer);
+    };
+    window.addEventListener("click", handleClick);
     return () => {
-      window.removeEventListener('click', handleClick as EventListener)
-      window.removeEventListener('touchstart', handleClick as EventListener)
-    }
-  }, [nextId])
+      window.removeEventListener("click", handleClick);
+      for (const timer of timers) clearTimeout(timer);
+    };
+  }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-40">
+    <div className="click-hearts" aria-hidden="true">
       <AnimatePresence>
-        {hearts.map(heart => (
-          <motion.div
+        {hearts.map((heart) => (
+          <motion.span
             key={heart.id}
-            className="absolute text-4xl"
-            style={{
-              left: heart.x,
-              top: heart.y,
-              transform: 'translate(-50%, -50%)'
-            }}
-            initial={{ scale: 0, opacity: 1, y: 0 }}
-            animate={{ 
-              scale: [0, 1.2, 1],
-              opacity: [1, 1, 0],
-              y: -100,
-              rotate: [0, 10, -10, 0]
-            }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 2, ease: 'easeOut' }}
+            style={{ left: heart.x - 10, top: heart.y - 10 }}
+            initial={{ opacity: 0.8, scale: 0.6, y: 0 }}
+            animate={{ opacity: 0, scale: 1.1, y: -50 }}
+            transition={{ duration: 1 }}
           >
-            {heart.emoji}
-          </motion.div>
+            <Icon name="heart" size={22} />
+          </motion.span>
         ))}
       </AnimatePresence>
     </div>
-  )
+  );
 }

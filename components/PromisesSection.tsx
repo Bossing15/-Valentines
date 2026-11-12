@@ -1,107 +1,115 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from "framer-motion";
+import { Icon } from "@/components/SiteIcons";
 
 const promises = [
   {
-    emoji: '🌅',
-    title: 'Every Morning',
-    promise: 'I promise to choose you, every single day, even on the hard ones.'
+    icon: "sun",
+    title: "Every Morning",
+    promise:
+      "I promise to choose you, every single day, even on the hard ones.",
   },
   {
-    emoji: '🤝',
-    title: 'Through Everything',
-    promise: 'I promise to stand by you, through every storm and every sunshine.'
+    icon: "linked",
+    title: "Through Everything",
+    promise:
+      "I promise to stand by you, through every storm and every sunshine.",
   },
   {
-    emoji: '👂',
-    title: 'Always Listen',
-    promise: 'I promise to hear you, not just your words, but your heart.'
+    icon: "listen",
+    title: "Always Listen",
+    promise: "I promise to hear you, not just your words, but your heart.",
   },
   {
-    emoji: '🌱',
-    title: 'Grow Together',
-    promise: 'I promise to grow with you, not apart, no matter how we change.'
+    icon: "leaf",
+    title: "Grow Together",
+    promise: "I promise to grow with you, not apart, no matter how we change.",
   },
   {
-    emoji: '😊',
-    title: 'Make You Smile',
-    promise: 'I promise to make you laugh, especially when you need it most.'
+    icon: "smile",
+    title: "Make You Smile",
+    promise: "I promise to make you laugh, especially when you need it most.",
   },
   {
-    emoji: '🏠',
-    title: 'Be Your Home',
-    promise: 'I promise to be your safe place, always and forever.'
-  }
-]
+    icon: "home",
+    title: "Be Your Home",
+    promise: "I promise to be your safe place, always and forever.",
+  },
+] as const;
 
 export function PromisesSection() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section className="min-h-screen flex items-center justify-center py-16 sm:py-24 px-4 sm:px-6 bg-transparent">
-      <div className="w-full max-w-6xl mx-auto">
+    <section
+      id="promises"
+      className="chapter-section night-section"
+      aria-labelledby="promises-heading"
+    >
+      <div className="section-shell">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 sm:mb-16"
+          viewport={{ once: true }}
+          transition={{ duration: reduceMotion ? 0 : 0.6 }}
+          className="section-heading"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4 sm:mb-6 text-white drop-shadow-lg px-4">
+          <p className="eyebrow mb-5">The vows I mean</p>
+          <h2 id="promises-heading" className="display-title mb-6">
             My Promises to You
           </h2>
-          <p className="text-lg sm:text-xl text-white/90 drop-shadow-md px-4">
+          <p className="section-description">
             These are the vows I make to you, today and always
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="promises-grid grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {promises.map((promise, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
+            <motion.article
+              key={promise.title}
+              initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-elegant border border-rose/10"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.5,
+                delay: reduceMotion ? 0 : index * 0.04,
+              }}
+              className="night-card min-h-[280px] p-6 sm:p-8"
+              aria-labelledby={`promise-title-${index + 1}`}
             >
-              <motion.div
-                className="text-5xl sm:text-6xl mb-4"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 5, -5, 0]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: index * 0.2
-                }}
+              <div className="mb-7 flex items-center justify-between">
+                <span className="icon-badge text-accent" aria-hidden="true">
+                  <Icon name={promise.icon} size={22} />
+                </span>
+                <span className="eyebrow">
+                  {String(index + 1).padStart(2, "0")} / 06
+                </span>
+              </div>
+              <h3
+                id={`promise-title-${index + 1}`}
+                className="mb-4 font-serif text-2xl leading-snug"
               >
-                {promise.emoji}
-              </motion.div>
-              <h3 className="text-xl sm:text-2xl font-normal text-accent mb-3">
                 {promise.title}
               </h3>
-              <p className="text-sm sm:text-base text-foreground leading-relaxed italic">
-                "{promise.promise}"
-              </p>
-            </motion.div>
+              <p className="body-copy">&ldquo;{promise.promise}&rdquo;</p>
+            </motion.article>
           ))}
         </div>
 
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-center mt-12 sm:mt-16"
+          viewport={{ once: true }}
+          transition={{ duration: reduceMotion ? 0 : 0.6 }}
+          className="mx-auto mt-14 max-w-2xl text-center sm:mt-16"
         >
-          <p className="text-lg sm:text-xl text-white/90 drop-shadow-md italic px-4">
-            "These aren't just words. They're my commitment to us." 💕
-          </p>
+          <div className="section-rule mb-8" aria-hidden="true" />
+          <blockquote className="handwritten text-2xl leading-relaxed sm:text-3xl">
+            &ldquo;These aren't just words. They're my commitment to us.&rdquo;
+          </blockquote>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

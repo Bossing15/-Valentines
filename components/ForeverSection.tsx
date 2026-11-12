@@ -1,136 +1,74 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from "framer-motion";
+import { Icon } from "@/components/SiteIcons";
 
 export function ForeverSection() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section className="min-h-screen flex items-center justify-center py-16 sm:py-24 px-4 sm:px-6 bg-transparent relative overflow-hidden">
-      {/* Floating hearts background */}
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-4xl sm:text-5xl md:text-6xl opacity-10"
-            style={{
-              left: `${(i * 5.5) % 100}%`,
-              top: `${(i * 7.3) % 100}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              rotate: [0, 10, -10, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 5 + (i % 3),
-              repeat: Infinity,
-              delay: i * 0.3,
-              ease: 'easeInOut'
-            }}
-          >
-            💕
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="w-full max-w-4xl mx-auto text-center relative z-10">
+    <section
+      id="forever"
+      className="forever-section chapter-section night-section"
+      aria-labelledby="forever-heading"
+    >
+      <div className="section-shell text-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false }}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          className="mx-auto max-w-3xl"
+          initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: reduceMotion ? 0 : 0.7 }}
         >
-          {/* Main message */}
-          <motion.div
-            className="mb-12 sm:mb-16"
-            animate={{
-              scale: [1, 1.02, 1],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: 'easeInOut'
-            }}
-          >
-            <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light mb-6 sm:mb-8 text-white drop-shadow-2xl px-4">
-              Forever & Always
+          <div className="section-heading">
+            <span
+              className="icon-badge mx-auto mb-7 text-accent"
+              aria-hidden="true"
+            >
+              <Icon name="infinity" size={28} />
+            </span>
+            <p className="eyebrow mb-5">The story continues</p>
+            <h2 id="forever-heading" className="display-title">
+              Forever &amp; Always
             </h2>
-            <motion.div
-              className="text-6xl sm:text-7xl md:text-8xl mb-6 sm:mb-8"
-              animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 5, -5, 0]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-            >
-              💖
-            </motion.div>
-          </motion.div>
+          </div>
 
-          {/* Quote */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="space-y-6 sm:space-y-8"
-          >
-            <p className="text-2xl sm:text-3xl md:text-4xl text-white/95 drop-shadow-lg font-light leading-relaxed px-4">
-              "In a world of temporary things,
-            </p>
-            <p className="text-2xl sm:text-3xl md:text-4xl text-white/95 drop-shadow-lg font-light leading-relaxed px-4">
-              you are my forever."
-            </p>
-          </motion.div>
+          <blockquote className="handwritten text-2xl leading-relaxed sm:text-3xl md:text-4xl">
+            <span className="block">
+              &ldquo;In a world of temporary things,
+            </span>
+            <span className="block">you are my forever.&rdquo;</span>
+          </blockquote>
 
-          {/* Final message */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: false }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="mt-12 sm:mt-16 space-y-4 sm:space-y-6"
-          >
-            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 drop-shadow-md italic px-4">
-              Thank you for five beautiful years.
-            </p>
-            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 drop-shadow-md italic px-4">
-              Here's to forever more.
-            </p>
-            
-            <motion.div
-              className="flex justify-center gap-3 sm:gap-4 mt-8 sm:mt-12 text-4xl sm:text-5xl md:text-6xl"
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-            >
-              <span>💕</span>
-              <span>💖</span>
-              <span>💗</span>
-            </motion.div>
-          </motion.div>
+          <div className="body-copy mt-10 space-y-2 sm:mt-12">
+            <p>Thank you for five beautiful years.</p>
+            <p>Here's to forever more.</p>
+          </div>
 
-          {/* Signature */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: false }}
-            transition={{ duration: 1, delay: 1.2 }}
-            className="mt-12 sm:mt-16 text-lg sm:text-xl text-white/80 drop-shadow-md px-4"
+          <p className="section-description mt-10 sm:mt-12">
+            With all my love,
+            <br />
+            <span className="handwritten text-accent mt-2 inline-block text-3xl sm:text-4xl">
+              James
+            </span>
+          </p>
+
+          <a
+            href="#top"
+            className="quiet-button mt-12 inline-flex min-h-12 items-center justify-center gap-2 px-6 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c697a4] focus-visible:ring-offset-4 focus-visible:ring-offset-[#21151c]"
           >
-            With all my love,<br />
-            <span className="text-2xl sm:text-3xl font-semibold text-rose-300">James</span>
-          </motion.p>
+            <span aria-hidden="true">
+              <Icon name="arrow-up" size={18} />
+            </span>
+            Read our story again
+          </a>
         </motion.div>
+
+        <div className="section-rule mt-16 sm:mt-20" aria-hidden="true" />
+        <footer className="section-description pt-8 text-sm">
+          Made with love, by James for Joanne.
+        </footer>
       </div>
     </section>
-  )
+  );
 }
