@@ -12,6 +12,7 @@ const timelineData = [
     reflection:
       "Everything was new. Every conversation felt like discovering a secret. We were learning each other's rhythms, and somehow, it all felt easy.",
     image: "/pictures/year_one.jpg",
+    aspectRatio: 1536 / 3232,
     sticker: "/pictures/dubu1.gif",
   },
   {
@@ -21,6 +22,7 @@ const timelineData = [
     reflection:
       "We learned how to argue, how to forgive, and how to sit in silence together. Somehow, that made everything stronger.",
     image: "/pictures/year_two.jpg",
+    aspectRatio: 3232 / 1536,
     sticker: "/pictures/output-onlinegiftools 3.gif",
   },
   {
@@ -30,6 +32,7 @@ const timelineData = [
     reflection:
       "The year we stopped trying to impress each other and started just being. Comfortable. Safe. Home.",
     image: "/pictures/year_three.jpg",
+    aspectRatio: 3264 / 2448,
     sticker: "/pictures/output-onlinegiftools 4.gif",
   },
   {
@@ -39,6 +42,8 @@ const timelineData = [
     reflection:
       "We grew. Not apart, but deeper. We faced things together that I never thought I could face with anyone.",
     image: "/pictures/year_four.jpg",
+    // The source's EXIF orientation rotates its stored 720 × 960 dimensions.
+    aspectRatio: 960 / 720,
     sticker: "/pictures/dubu8.gif",
   },
   {
@@ -48,9 +53,22 @@ const timelineData = [
     reflection:
       "And here we are. Still choosing each other. Still learning. Still growing. Still us.",
     image: "/pictures/year_five.jpg",
+    aspectRatio: 2448 / 3264,
     sticker: "/pictures/dubu11.gif",
   },
 ];
+
+function photoSizes(aspectRatio: number) {
+  // object-cover scales landscape photos by height inside the 4:5 frame.
+  // Request enough pixels for that scale, not just the frame's visible width.
+  const coverScale = Math.max(1, aspectRatio / (4 / 5));
+  const mobileMax = Math.ceil(366 * coverScale);
+  const mobileVw = (100 * coverScale).toFixed(2);
+  const mobileInset = Math.floor(80 * coverScale);
+  const desktopMax = Math.ceil(500 * coverScale);
+
+  return `(max-width: 760px) min(${mobileMax}px, calc(${mobileVw}vw - ${mobileInset}px)), ${desktopMax}px`;
+}
 
 export function TimelineSection() {
   return (
@@ -102,8 +120,8 @@ export function TimelineSection() {
                       src={item.image}
                       alt={`James and Joanne together — ${item.year}, ${item.period}`}
                       fill
-                      sizes="(max-width: 760px) 85vw, 440px"
-                      quality={75}
+                      sizes={photoSizes(item.aspectRatio)}
+                      quality={90}
                       className="object-cover"
                     />
                   </div>
