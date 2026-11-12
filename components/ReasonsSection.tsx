@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { Icon } from "@/components/SiteIcons";
+import { storyEase, storyMotion } from "@/lib/motion";
 
 const reasons = [
   {
@@ -33,6 +34,7 @@ const reasons = [
 
 export function ReasonsSection() {
   const reduceMotion = useReducedMotion();
+  const { item, group } = storyMotion(reduceMotion);
 
   return (
     <section
@@ -43,16 +45,24 @@ export function ReasonsSection() {
       <div className="section-shell">
         <motion.div
           className="section-heading"
-          initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: reduceMotion ? 0 : 0.6 }}
+          variants={group}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
         >
-          <p className="eyebrow mb-5">The everyday kind of love</p>
-          <h2 id="reasons-heading" className="display-title mb-6">
+          <motion.p variants={item} className="eyebrow mb-5">
+            The everyday kind of love
+          </motion.p>
+          <motion.h2
+            variants={item}
+            id="reasons-heading"
+            className="display-title mb-6"
+          >
             Why I Still Choose You
-          </h2>
-          <p className="section-description">Tap each card to read more</p>
+          </motion.h2>
+          <motion.p variants={item} className="section-description">
+            Tap each card to read more
+          </motion.p>
         </motion.div>
 
         <div className="reasons-grid grid grid-cols-1 items-start gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -74,68 +84,72 @@ function ReasonCard({
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const reduceMotion = useReducedMotion();
+  const { item } = storyMotion(reduceMotion);
   const detailId = `reason-detail-${index + 1}`;
 
   return (
-    <motion.button
-      type="button"
-      className={`night-card flex min-h-[260px] w-full flex-col items-start p-6 text-left transition-colors sm:p-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c697a4] focus-visible:ring-offset-4 focus-visible:ring-offset-[#21151c] ${isFlipped ? "border-[#c697a4]/60" : "hover:border-[#c697a4]/40"}`}
-      initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
+    <motion.div
+      variants={item}
+      initial="hidden"
+      whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      transition={{
-        duration: reduceMotion ? 0 : 0.5,
-        delay: reduceMotion ? 0 : index * 0.04,
-      }}
-      aria-expanded={isFlipped}
-      aria-controls={detailId}
-      aria-labelledby={`reason-title-${index + 1}`}
-      onClick={() => setIsFlipped((previous) => !previous)}
     >
-      <span className="mb-7 flex w-full items-center justify-between">
-        <span className="eyebrow">
-          Reason {String(index + 1).padStart(2, "0")}
-        </span>
-        <span className="text-accent" aria-hidden="true">
-          <Icon name="heart" size={20} />
-        </span>
-      </span>
-
-      <span
-        id={`reason-title-${index + 1}`}
-        className="block font-serif text-2xl leading-snug"
+      <motion.button
+        type="button"
+        className={`night-card interactive-card flex min-h-[260px] w-full flex-col items-start p-6 text-left transition-colors sm:p-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c697a4] focus-visible:ring-offset-4 focus-visible:ring-offset-[#21151c] ${isFlipped ? "border-[#c697a4]/60" : "hover:border-[#c697a4]/40"}`}
+        whileHover={reduceMotion ? undefined : { y: -4 }}
+        whileTap={reduceMotion ? undefined : { scale: 0.99 }}
+        transition={{ duration: reduceMotion ? 0 : 0.22, ease: storyEase }}
+        aria-expanded={isFlipped}
+        aria-controls={detailId}
+        aria-labelledby={`reason-title-${index + 1}`}
+        onClick={() => setIsFlipped((previous) => !previous)}
       >
-        {reason.front}
-      </span>
-
-      <span id={detailId} className="block w-full" aria-hidden={!isFlipped}>
-        <AnimatePresence initial={false}>
-          {isFlipped && (
-            <motion.span
-              key="detail"
-              className="block overflow-hidden"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{
-                duration: reduceMotion ? 0 : 0.25,
-                ease: "easeOut",
-              }}
-            >
-              <span className="body-copy mt-5 block border-t border-[#f4ede2]/15 pt-5">
-                {reason.back}
-              </span>
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </span>
-
-      <span className="section-description mt-auto flex items-center gap-2 pt-7 text-sm">
-        {isFlipped ? "Show less" : "Read more"}
-        <span aria-hidden="true">
-          <Icon name={isFlipped ? "arrow-up" : "arrow-down"} size={16} />
+        <span className="mb-7 flex w-full items-center justify-between">
+          <span className="eyebrow">
+            Reason {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="text-accent" aria-hidden="true">
+            <Icon name="heart" size={20} />
+          </span>
         </span>
-      </span>
-    </motion.button>
+
+        <span
+          id={`reason-title-${index + 1}`}
+          className="block font-serif text-2xl leading-snug"
+        >
+          {reason.front}
+        </span>
+
+        <span id={detailId} className="block w-full" aria-hidden={!isFlipped}>
+          <AnimatePresence initial={false}>
+            {isFlipped && (
+              <motion.span
+                key="detail"
+                className="block overflow-hidden"
+                initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.25,
+                  ease: storyEase,
+                }}
+              >
+                <span className="body-copy mt-5 block border-t border-[#f4ede2]/15 pt-5">
+                  {reason.back}
+                </span>
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </span>
+
+        <span className="section-description mt-auto flex items-center gap-2 pt-7 text-sm">
+          {isFlipped ? "Show less" : "Read more"}
+          <span aria-hidden="true">
+            <Icon name={isFlipped ? "arrow-up" : "arrow-down"} size={16} />
+          </span>
+        </span>
+      </motion.button>
+    </motion.div>
   );
 }

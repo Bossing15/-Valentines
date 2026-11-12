@@ -1,6 +1,12 @@
 "use client";
 
-import { MotionConfig, motion, useScroll } from "framer-motion";
+import {
+  MotionConfig,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { ClickHearts } from "@/components/ClickHearts";
 import { CursorTrail } from "@/components/CursorTrail";
@@ -27,6 +33,11 @@ export default function Home() {
   const [showContent, setShowContent] = useState(false);
   const [activeChapter, setActiveChapter] = useState("");
   const { scrollYProgress } = useScroll();
+  const reduced = useReducedMotion();
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 180,
+    damping: 35,
+  });
   const handleLoadingComplete = useCallback(() => {
     setShowContent(true);
   }, []);
@@ -61,6 +72,36 @@ export default function Home() {
       cancelAnimationFrame(frame);
     };
   }, []);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll<HTMLElement>(
+      ".landing-section, .rocket-section, .forever-section",
+    );
+    if (!showContent || reduced) return;
+
+    const visible = new Set<Element>();
+    const updateActivity = () => {
+      for (const section of sections) {
+        section.dataset.ambientActive = String(
+          visible.has(section) && !document.hidden,
+        );
+      }
+    };
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) visible.add(entry.target);
+        else visible.delete(entry.target);
+      }
+      updateActivity();
+    });
+    for (const section of sections) observer.observe(section);
+    document.addEventListener("visibilitychange", updateActivity);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updateActivity);
+      for (const section of sections) delete section.dataset.ambientActive;
+    };
+  }, [showContent, reduced]);
 
   return (
     <MotionConfig reducedMotion="user">
@@ -97,11 +138,11 @@ export default function Home() {
           </div>
           <motion.div
             className="reading-progress"
-            style={{ scaleX: scrollYProgress }}
+            style={{ scaleX: reduced ? scrollYProgress : smoothProgress }}
           />
         </header>
         <main>
-          <LandingSection />
+          <LandingSection ready={showContent} />
           <TimelineSection />
           <div className="night-journey" data-rocket-section>
             <div className="night-stars" aria-hidden="true" />

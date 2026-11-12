@@ -1,11 +1,14 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@/components/SiteIcons";
+import { storyEase, storyMotion } from "@/lib/motion";
 
 export function RocketTransition() {
+  const reduceMotion = useReducedMotion();
+  const { item, group } = storyMotion(reduceMotion);
   const videoRef = useRef<HTMLVideoElement>(null);
   const launchRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -55,22 +58,33 @@ export function RocketTransition() {
         <div className="cosmic-orbit cosmic-orbit-two" aria-hidden="true" />
         <div className="section-shell rocket-content">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            variants={group}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.25 }}
           >
-            <div className="cosmic-emblem" aria-hidden="true">
+            <motion.div
+              variants={item}
+              className="cosmic-emblem"
+              aria-hidden="true"
+            >
               <Icon name="star" size={36} />
-            </div>
-            <p className="eyebrow">From our little world, to the universe</p>
-            <h2 id="beyond-title" className="display-title">
+            </motion.div>
+            <motion.p variants={item} className="eyebrow">
+              From our little world, to the universe
+            </motion.p>
+            <motion.h2
+              variants={item}
+              id="beyond-title"
+              className="display-title"
+            >
               Until the <em>very end.</em>
-            </h2>
-            <p className="rocket-subtitle handwritten">
+            </motion.h2>
+            <motion.p variants={item} className="rocket-subtitle handwritten">
               I will still choose you.
-            </p>
-            <button
+            </motion.p>
+            <motion.button
+              variants={item}
               ref={launchRef}
               type="button"
               className="quiet-button launch-button"
@@ -81,8 +95,10 @@ export function RocketTransition() {
             >
               <Icon name="play" size={16} /> A little trip to the stars{" "}
               <span className="button-time">PLAY FILM</span>
-            </button>
-            <p className="rocket-caption">Our story doesn’t end here.</p>
+            </motion.button>
+            <motion.p variants={item} className="rocket-caption">
+              Our story doesn’t end here.
+            </motion.p>
           </motion.div>
         </div>
         <span className="rocket-bottom-line" aria-hidden="true" />
@@ -99,7 +115,10 @@ export function RocketTransition() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.3,
+                  ease: storyEase,
+                }}
               >
                 <button
                   ref={closeRef}

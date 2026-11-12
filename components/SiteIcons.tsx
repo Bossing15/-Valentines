@@ -9,6 +9,8 @@ export type IconName =
   | "infinity"
   | "play"
   | "pause"
+  | "skip-back"
+  | "skip-forward"
   | "close"
   | "sun"
   | "linked"
@@ -37,6 +39,8 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M8 5v14M16 5v14" />
     </>
   ),
+  "skip-back": <path d="M5 5v14m14-14L8 12l11 7V5Z" />,
+  "skip-forward": <path d="M19 5v14M5 5l11 7-11 7V5Z" />,
   close: <path d="m6 6 12 12M18 6 6 18" />,
   sun: (
     <>

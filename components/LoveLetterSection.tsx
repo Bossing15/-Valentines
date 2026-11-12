@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/SiteIcons";
+import { storyEase, storyMotion } from "@/lib/motion";
 
 export function LoveLetterSection() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +12,7 @@ export function LoveLetterSection() {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const returnFocus = useRef(false);
   const reduceMotion = useReducedMotion();
+  const { item, group } = storyMotion(reduceMotion);
 
   useEffect(() => {
     if (isOpen) {
@@ -35,31 +37,37 @@ export function LoveLetterSection() {
     >
       <div className="section-shell">
         <motion.div
-          initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: reduceMotion ? 0 : 0.6 }}
+          variants={group}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
           className="section-heading"
         >
-          <p className="eyebrow mb-5">For Joanne, from James</p>
-          <h2 id="letter-heading" className="display-title mb-6">
+          <motion.p variants={item} className="eyebrow mb-5">
+            For Joanne, from James
+          </motion.p>
+          <motion.h2
+            variants={item}
+            id="letter-heading"
+            className="display-title mb-6"
+          >
             A Letter For You
-          </h2>
-          <p id="letter-instruction" className="section-description">
+          </motion.h2>
+          <motion.p
+            variants={item}
+            id="letter-instruction"
+            className="section-description"
+          >
             {isOpen ? "From my heart to yours" : "Click the envelope to open"}
-          </p>
+          </motion.p>
         </motion.div>
 
         <div className="mx-auto w-full max-w-3xl">
-          <motion.button
+          <button
             ref={envelopeRef}
             type="button"
             hidden={isOpen || isClosing}
-            className={`mx-auto w-full max-w-[420px] rounded-xl text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c697a4] focus-visible:ring-offset-8 focus-visible:ring-offset-[#21151c] ${isOpen || isClosing ? "hidden" : "block"}`}
-            initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: reduceMotion ? 0 : 0.5 }}
+            className={`envelope-button mx-auto w-full max-w-[420px] rounded-xl text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c697a4] focus-visible:ring-offset-8 focus-visible:ring-offset-[#21151c] ${isOpen || isClosing ? "hidden" : "block"}`}
             onClick={() => setIsOpen(true)}
             aria-label="Open James's letter to Joanne"
             aria-expanded={isOpen}
@@ -84,7 +92,7 @@ export function LoveLetterSection() {
                 <Icon name="arrow-right" size={16} />
               </span>
             </span>
-          </motion.button>
+          </button>
 
           <AnimatePresence onExitComplete={() => setIsClosing(false)}>
             {isOpen && (
@@ -93,12 +101,19 @@ export function LoveLetterSection() {
                 id="love-letter-content"
                 aria-labelledby="letter-salutation"
                 className="letter-paper w-full rounded-[20px] border border-[#dccbbc] bg-[#f4ede2] p-6 text-[#34232a] sm:p-10 md:p-14"
-                initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
+                exit={{
+                  opacity: 0,
+                  y: reduceMotion ? 0 : 8,
+                  transition: {
+                    duration: reduceMotion ? 0 : 0.35,
+                    ease: "easeOut",
+                  },
+                }}
                 transition={{
-                  duration: reduceMotion ? 0 : 0.35,
-                  ease: "easeOut",
+                  duration: reduceMotion ? 0 : 0.45,
+                  ease: storyEase,
                 }}
               >
                 <header className="mb-10 flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">

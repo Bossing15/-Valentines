@@ -1,9 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Icon } from "@/components/SiteIcons";
+import { storyMotion } from "@/lib/motion";
 
-export function LandingSection() {
+export function LandingSection({ ready = true }: { ready?: boolean }) {
+  const reduced = useReducedMotion();
+  const { item, group } = storyMotion(reduced);
   return (
     <section
       id="top"
@@ -23,25 +26,29 @@ export function LandingSection() {
       </div>
       <motion.div
         className="hero-content section-shell"
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.15 }}
+        variants={group}
+        initial="hidden"
+        animate={ready ? "visible" : "hidden"}
       >
-        <p className="eyebrow hero-eyebrow">
+        <motion.p variants={item} className="eyebrow hero-eyebrow">
           <span className="tiny-rule" /> A little love, a whole lot of us{" "}
           <span className="tiny-rule" />
-        </p>
-        <h1 id="landing-title" className="hero-title">
+        </motion.p>
+        <motion.h1 variants={item} id="landing-title" className="hero-title">
           Almost five years ago,
           <br />I met my <em>favorite person.</em>
-        </h1>
-        <p className="hero-description">
+        </motion.h1>
+        <motion.p variants={item} className="hero-description">
           This is just a small reminder of why
           <br className="desktop-break" /> I still choose you.
-        </p>
-        <a href="#story" className="rose-button hero-button">
+        </motion.p>
+        <motion.a
+          variants={item}
+          href="#story"
+          className="rose-button hero-button"
+        >
           Turn the first page <Icon name="arrow-down" size={17} />
-        </a>
+        </motion.a>
       </motion.div>
       <div className="hero-footnote section-shell">
         <span>EST. 2021</span>
